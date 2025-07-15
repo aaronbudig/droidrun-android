@@ -1,7 +1,24 @@
 import importlib
 import logging
 from typing import Any
-from llama_index.core.llms.llm import LLM
+
+try:
+    # Attempt to import the base LLM class from llama‑index.
+    from llama_index.core.llms.llm import LLM  # type: ignore
+except ModuleNotFoundError:
+    # If llama‑index isn't installed (e.g. on Android where Rust wheels fail),
+    # define a minimal stub so that importing this module doesn't crash.
+    class LLM:  # type: ignore
+        """Stub LLM base class used when llama_index is absent.
+        
+        Any attempt to instantiate this class will raise the same
+        ModuleNotFoundError, but other code can still import this
+        module and handle the error gracefully.
+        """
+        def __init__(self, *args, **kwargs):
+            raise ModuleNotFoundError(
+                "llama_index is not installed; install llama-index to use load_llm."
+            )
 # Configure logging
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
