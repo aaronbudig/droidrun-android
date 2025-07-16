@@ -7,9 +7,18 @@ import asyncio
 import logging
 from typing import Dict, Any, List, Tuple
 
-from llama_index.core.base.llms.types import ChatMessage
-from llama_index.core.llms.llm import LLM
-from llama_index.core.memory import ChatMemoryBuffer
+# Guarded import so this Android build works even when `llama_index` is absent.
+try:
+    from llama_index.core.base.llms.types import ChatMessage
+    from llama_index.core.llms.llm import LLM
+except ModuleNotFoundError:  # pragma: no cover
+    class _Stub:
+        def __getattr__(self, name):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+        def __call__(self, *args, **kwargs):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+    ChatMessage = LLM = _Stub()  # type: ignore
+
 from ..codeact import CodeActAgent
 from ..planner import PlannerAgent, TaskManager
 from ..utils.executer import SimpleCodeExecutor
