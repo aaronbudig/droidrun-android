@@ -1,9 +1,21 @@
-from llama_index.core.workflow import (
-    StartEvent,
-    StopEvent,
-    Workflow,
-    step,
-)
+# from llama_index.core.workflow import (
+#     StartEvent,
+#     StopEvent,
+#     Workflow,
+#     step,
+# )
+try:
+    from llama_index.core.workflow import StartEvent, StopEvent, Workflow, step, Context
+except ModuleNotFoundError:  # pragma: no cover
+    class _Stub:
+        def __getattr__(self, name):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+        def __call__(self, *args, **kwargs):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+    StartEvent = StopEvent = Workflow = Context = _Stub  # type: ignore
+    def step(fn):          # decorator stub
+        return fn
+
 from .events import *
 from .prompts import (
     DEFAULT_PLANNER_SYSTEM_PROMPT,
