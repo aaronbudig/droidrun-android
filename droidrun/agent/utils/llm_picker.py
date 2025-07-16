@@ -47,7 +47,7 @@ def load_llm(provider_name: str, **kwargs: Any) -> LLM:
     """
     if provider_name.lower() == "stub":
         from droidrun._android_stubs import DummyLLM   # noqa: F401
-        return DummyLLM()
+        return DummyLLM(**kwargs)
     if not provider_name:
         raise ValueError("provider_name cannot be empty.")
     if provider_name == "OpenAILike":
