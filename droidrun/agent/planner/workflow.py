@@ -36,13 +36,15 @@ try:
     from llama_index.core.base.llms.types import ChatMessage, ChatResponse
     from llama_index.core.prompts import PromptTemplate
     from llama_index.core.memory import ChatMemoryBuffer
+    from llama_index.core.llms.llm import LLM            # ➊ add this import
 except ModuleNotFoundError:  # pragma: no cover
     class _Stub:
         def __getattr__(self, name):
             raise ModuleNotFoundError("llama_index is not installed") from None
         def __call__(self, *args, **kwargs):
             raise ModuleNotFoundError("llama_index is not installed") from None
-    ChatMessage = ChatResponse = PromptTemplate = ChatMemoryBuffer = _Stub()  # type: ignore
+    # ➋ include LLM in the fallback assignments
+    ChatMessage = ChatResponse = PromptTemplate = ChatMemoryBuffer = LLM = _Stub()  # type: ignore
 
 from ..utils.executer import SimpleCodeExecutor
 from ..utils.chat_utils import add_ui_text_block, add_screenshot_image_block, add_phone_state_block, message_copy
