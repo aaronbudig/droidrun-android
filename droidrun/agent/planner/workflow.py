@@ -15,11 +15,22 @@ import os
 from typing import List, Optional, Tuple, TYPE_CHECKING, Union
 import inspect
 # LlamaIndex imports for LLM interaction and types
-from llama_index.core.base.llms.types import ChatMessage, ChatResponse
-from llama_index.core.llms.llm import LLM
-from llama_index.core.workflow import Workflow, StartEvent, StopEvent, Context, step
-from llama_index.core.memory import ChatMemoryBuffer
-from llama_index.core.llms.llm import LLM
+# from llama_index.core.base.llms.types import ChatMessage, ChatResponse
+# from llama_index.core.llms.llm import LLM
+# from llama_index.core.workflow import Workflow, StartEvent, StopEvent, Context, step
+# from llama_index.core.memory import ChatMemoryBuffer
+# from llama_index.core.llms.llm import LLM
+try:
+    from llama_index.core.base.llms.types import ChatMessage, ChatResponse
+    from llama_index.core.prompts import PromptTemplate
+    from llama_index.core.memory import ChatMemoryBuffer
+except ModuleNotFoundError:  # pragma: no cover
+    class _Stub:
+        def __getattr__(self, name):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+        def __call__(self, *args, **kwargs):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+    ChatMessage = ChatResponse = PromptTemplate = ChatMemoryBuffer = _Stub()  # type: ignore
 from ..utils.executer import SimpleCodeExecutor
 from ..utils.chat_utils import add_ui_text_block, add_screenshot_image_block, add_phone_state_block, message_copy
 from .task_manager import TaskManager
