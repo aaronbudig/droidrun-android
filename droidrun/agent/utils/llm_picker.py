@@ -45,6 +45,13 @@ def load_llm(provider_name: str, **kwargs: Any) -> LLM:
         TypeError: If the found class is not a subclass of LLM or if kwargs are invalid.
         RuntimeError: For other initialization errors.
     """
+    if provider_name.lower() == "stub":
+        try:
+            from droidrun._android_stubs import DummyLLM   # noqa: F401
+            return DummyLLM()
+        except Exception:
+            # Fall through to normal loading so the usual error is raised.
+            pass
     if not provider_name:
         raise ValueError("provider_name cannot be empty.")
     if provider_name == "OpenAILike":

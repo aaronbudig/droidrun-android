@@ -1,6 +1,6 @@
 [project]
 name = "droidrun"
-version = "0.2.0+android19"
+version = "0.2.0+android20"
 description = "A framework for controlling Android devices through LLM agents"
 authors = [
     {name = "Niels Schmidt", email = "niels.schmidt@droidrun.ai"},
