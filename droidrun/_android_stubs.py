@@ -18,7 +18,8 @@ llms_pkg        = sys.modules.setdefault("llama_index.llms", types.ModuleType("l
 # 2.  Provider stubs
 # ------------------------------------------------------------------
 class DummyLLM(_LLMBase):             # <-- now subclasses the fake LLM
-    def __init__(self, *_, **__): pass
+    def __init__(self, *_, **__):
+        print("### DummyLLM says hello, args:", len(args), "kwargs:", len(kwargs))
     def complete(self, *_, **__): return "stub"
 
 # openai provider
