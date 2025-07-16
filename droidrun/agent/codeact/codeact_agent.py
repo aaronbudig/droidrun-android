@@ -3,11 +3,32 @@ import re
 import inspect
 import time
 from typing import Awaitable, Callable, List, Optional, Dict, Any, Tuple, TYPE_CHECKING, Union
-from llama_index.core.base.llms.types import ChatMessage, ChatResponse, TextBlock
-from llama_index.core.prompts import PromptTemplate
-from llama_index.core.llms.llm import LLM
-from llama_index.core.workflow import Workflow, StartEvent, StopEvent, Context, step
-from llama_index.core.memory import ChatMemoryBuffer
+# Guarded import: if `llama_index` isn't present (e.g. on Android where
+# Rust wheels cannot be built), fall back to lightweight stubs so the
+# module can still be imported.
+try:
+    from llama_index.core.base.llms.types import ChatMessage, ChatResponse, TextBlock
+    from llama_index.core.prompts import PromptTemplate
+    from llama_index.core.llms.llm import LLM
+    from llama_index.core.workflow import Workflow, StartEvent, StopEvent, Context, step
+    from llama_index.core.memory import ChatMemoryBuffer
+except ModuleNotFoundError:  # pragma: no cover
+    # Minimal no‑op stubs that allow the rest of the file to import.
+    class _Stub:  # simple attribute sink
+        def __getattr__(self, name):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+        def __call__(self, *args, **kwargs):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+
+    ChatMessage = ChatResponse = TextBlock = _Stub()
+    PromptTemplate = lambda x: x
+    LLM = Workflow = StartEvent = StopEvent = Context = _Stub
+    def step(fn):  # decorator stub
+        return fn
+    class ChatMemoryBuffer(_Stub):  # type: ignore
+        @staticmethod
+        def from_defaults(*args, **kwargs):
+            raise ModuleNotFoundError("llama_index is not installed") from None
 from .events import FinalizeEvent, InputEvent, ModelOutputEvent, ExecutionEvent, ExecutionResultEvent
 from ..utils.chat_utils import add_screenshot, add_screenshot_image_block, add_ui_text_block, message_copy
 from .prompts import (
