@@ -31,6 +31,7 @@ except ModuleNotFoundError:  # pragma: no cover
         def __call__(self, *args, **kwargs):
             raise ModuleNotFoundError("llama_index is not installed") from None
     ChatMessage = ChatResponse = PromptTemplate = ChatMemoryBuffer = _Stub()  # type: ignore
+
 from ..utils.executer import SimpleCodeExecutor
 from ..utils.chat_utils import add_ui_text_block, add_screenshot_image_block, add_phone_state_block, message_copy
 from .task_manager import TaskManager
