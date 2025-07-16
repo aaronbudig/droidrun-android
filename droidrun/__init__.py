@@ -1,11 +1,11 @@
-"""
-DroidRun - A framework for controlling Android devices through LLM agents.
-"""
 try:
     import llama_index  # noqa: F401
 except ModuleNotFoundError:
     from . import _android_stubs  # noqa: F401
-
+    
+"""
+DroidRun - A framework for controlling Android devices through LLM agents.
+"""
 __version__ = "0.1.0"
 
 # Import main classes for easier access
