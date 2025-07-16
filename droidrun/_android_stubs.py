@@ -24,6 +24,7 @@ openai_mod.OpenAI = DummyLLM
 sys.modules["llama_index.llms.openai"] = openai_mod
 
 # stub provider path
+tub_mod = types.ModuleType("llama_index.llms.stub")
 stub_mod = types.ModuleType("llama_index.llms.stub")
 stub_mod.StubLLM = DummyLLM
 sys.modules["llama_index.llms.stub"] = stub_mod
