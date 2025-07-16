@@ -1,5 +1,18 @@
-from llama_index.core.llms import ChatMessage
-from llama_index.core.workflow import Event
+# Guarded import: allow this module to load even when `llama_index` is absent
+# (e.g., on Android where Rust wheels cannot be built). If the real package
+# isn't present, we create lightweight stubs so the rest of the codebase can
+# still import this module without raising `ModuleNotFoundError`.
+try:
+    from llama_index.core.llms import ChatMessage
+    from llama_index.core.workflow import Event
+except ModuleNotFoundError:  # pragma: no cover
+    class _Stub:
+        def __getattr__(self, name):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+        def __call__(self, *args, **kwargs):
+            raise ModuleNotFoundError("llama_index is not installed") from None
+    ChatMessage = _Stub()
+    Event = _Stub
 from typing import Any, Optional
 
 from pydantic import PrivateAttr
