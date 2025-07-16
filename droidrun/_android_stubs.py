@@ -26,5 +26,7 @@ sys.modules["llama_index.llms.openai"] = openai_mod
 # stub provider path
 tub_mod = types.ModuleType("llama_index.llms.stub")
 stub_mod = types.ModuleType("llama_index.llms.stub")
-stub_mod.StubLLM = DummyLLM
+stub_mod.StubLLM = DummyLLM     # legacy name some code paths expect
+stub_mod.stub    = DummyLLM     # loader expects this one (lower-case)
+stub_mod.Stub    = DummyLLM     # add Title-case just in case
 sys.modules["llama_index.llms.stub"] = stub_mod
