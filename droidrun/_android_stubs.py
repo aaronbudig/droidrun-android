@@ -18,8 +18,13 @@ llms_pkg        = sys.modules.setdefault("llama_index.llms", types.ModuleType("l
 # 2.  Provider stubs
 # ------------------------------------------------------------------
 class DummyLLM(_LLMBase):             # <-- now subclasses the fake LLM
-    def __init__(self, *_, **__):
-        print("### DummyLLM says hello, args:", len(args), "kwargs:", len(kwargs))
+    """Minimal no-op LLM used on Android when real back-ends are unavailable."""
+
+    def __init__(self, *args, **kwargs):
+        # Accept any constructor signature without exploding.
+        super().__init__()
+        # Store kwargs for debugging if you like.
+        self._init_kwargs = kwargs
     def complete(self, *_, **__): return "stub"
 
 # openai provider
