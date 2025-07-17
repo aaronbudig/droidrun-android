@@ -66,7 +66,7 @@ class CodeActAgent(Workflow):
         # assert instead of if
         assert llm, "llm must be provided."
         assert code_execute_fn, "code_execute_fn must be provided"
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
         self.llm = llm
         self.code_execute_fn = code_execute_fn

@@ -64,7 +64,7 @@ class PlannerAgent(Workflow):
     def __init__(self, goal: str, llm: LLM, agent: Optional[Workflow], tools_instance: 'Tools', 
                  executer = None, system_prompt = None, user_prompt = None, max_retries = 1, 
                  enable_tracing = False, debug = False, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__()
         
         # Setup tracing if enabled
         if enable_tracing:
