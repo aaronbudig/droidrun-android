@@ -20,15 +20,65 @@ except ModuleNotFoundError:  # pragma: no cover
         def __call__(self, *args, **kwargs):
             raise ModuleNotFoundError("llama_index is not installed") from None
 
-    ChatMessage = ChatResponse = TextBlock = _Stub()
-    PromptTemplate = lambda x: x
-    LLM = Workflow = StartEvent = StopEvent = Context = _Stub
-    def step(fn):  # decorator stub
+    # ChatMessage = ChatResponse = TextBlock = _Stub()
+    # PromptTemplate = lambda x: x
+    # LLM = Workflow = StartEvent = StopEvent = Context = _Stub
+    # def step(fn):  # decorator stub
+    #     return fn
+    # class ChatMemoryBuffer(_Stub):  # type: ignore
+    #     @staticmethod
+    #     def from_defaults(*args, **kwargs):
+    #         raise ModuleNotFoundError("llama_index is not installed") from None
+
+    class ChatMessage:
+        def __init__(self, role: str, content: Any):
+            self.role = role
+            self.content = content
+        def __repr__(self):
+            return f"ChatMessage(role={self.role!r}, content={self.content!r})"
+
+    class ChatResponse:
+        def __init__(self, message: "ChatMessage"):
+            self.message = message
+
+    class TextBlock:
+        def __init__(self, text: str):
+            self.text = text
+
+    PromptTemplate = lambda x: x          # identity – still has .format
+
+    class LLM:                            # ultra-light async stub
+        async def achat(self, messages):
+            return ChatResponse(ChatMessage("assistant", "(stub response)"))
+        @staticmethod
+        def class_name():
+            return "Stub_LLM"
+
+    class Workflow:
+        def __init__(self, *args, **kwargs):
+            pass
+
+    class StartEvent(dict):  pass
+    class StopEvent(dict):   pass
+
+    class Context(dict):
+        async def get(self, key, default=None):
+            return self.get(key, default)
+        async def set(self, key, value):
+            self[key] = value
+
+    def step(fn):            # decorator stub
         return fn
-    class ChatMemoryBuffer(_Stub):  # type: ignore
+
+    class ChatMemoryBuffer(list):
         @staticmethod
         def from_defaults(*args, **kwargs):
-            raise ModuleNotFoundError("llama_index is not installed") from None
+            return ChatMemoryBuffer()
+        async def aput(self, message):
+            self.append(message)
+        def get_all(self):
+            return list(self)
+
 from .events import FinalizeEvent, InputEvent, ModelOutputEvent, ExecutionEvent, ExecutionResultEvent
 from ..utils.chat_utils import add_screenshot, add_screenshot_image_block, add_ui_text_block, message_copy
 from .prompts import (
